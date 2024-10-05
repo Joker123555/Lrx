@@ -15,7 +15,7 @@ public class Region extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** $column.columnComment */
+    /** 主键id */
     private Long id;
 
     /** 区域名称 */
