@@ -56,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="contactPhone != null and contactPhone != ''">#{contactPhone},</if>
             <if test="splitRatio != null">#{splitRatio},</if>
             <if test="account != null and account != ''">#{account},</if>
-            <if test="password != null">#{password},</if>
+            <if test="password != null and password != ''">#{password},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="createBy != null">#{createBy},</if>

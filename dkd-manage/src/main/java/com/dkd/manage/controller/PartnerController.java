@@ -2,6 +2,8 @@ package com.dkd.manage.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.dkd.common.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,4 +103,23 @@ public class PartnerController extends BaseController
     {
         return toAjax(partnerService.deletePartnerByIds(ids));
     }
+
+    /**
+     * 重置合作商密码
+     * @param id
+     * @return 123456
+     */
+    @PreAuthorize("@ss.hasPermi('manage:partner:edit')")
+    @Log(title = "重置合作商密码", businessType = BusinessType.UPDATE)
+    @PutMapping("resetPwd/{id}")
+    public AjaxResult resetPwd(@PathVariable long id){//1.接受请求参数
+        //2.创建一个合作商对象
+        Partner partner = new Partner();
+        partner.setId(id);//设置id
+        partner.setPassword(SecurityUtils.encryptPassword("123456"));//设置加密后的初始密码
+        //3.调用service层修改密码
+        return toAjax(partnerService.updatePartner(partner));
+
+    }
+
 }
