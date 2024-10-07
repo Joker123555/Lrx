@@ -15,6 +15,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createBy"    column="create_by"    />
         <result property="updateBy"    column="update_by"    />
         <result property="remark"    column="remark"    />
+
+    </resultMap>
+    <resultMap type="NodeVo" id="NodeVoResult">
+        <result property="id"    column="id"    />
+        <result property="nodeName"    column="node_name"    />
+        <result property="address"    column="address"    />
+        <result property="regionType"    column="region_type"    />
+        <result property="regionId"    column="region_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <association property="region" javaType="region" column="region_id" select="com.dkd.manage.mapper.RegionMapper.selectRegionById"/>
     </resultMap>
 
     <sql id="selectNodeVo">
@@ -24,8 +38,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectNodeList" parameterType="Node" resultMap="NodeResult">
         <include refid="selectNodeVo"/>
         <where>  
-            <if test="nodeName != null  and nodeName != ''"> and node_name like concat('%', #{nodeName}, '%')</if>
-            <if test="regionId != null "> and region_id = #{regionId}</if>
+            <if test="nodeName != null  and nodeName != ''"> and n.node_name like concat('%', #{nodeName}, '%')</if>
+            <if test="regionId != null "> and n.region_id = #{regionId}</if>
         </where>
     </select>
     
@@ -33,7 +47,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectNodeVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectNodeVoList" resultMap="NodeVoResult">
+        SELECT n.*, r.*
+        FROM tb_node n
+        LEFT JOIN tb_region r ON n.region_id = r.id
+        <where>
+            <if test="nodeName != null  and nodeName != ''"> and n.node_name like concat('%', #{nodeName}, '%')</if>
+            <if test="regionId != null "> and n.region_id = #{regionId}</if>
+        </where>
+    </select>
+
     <insert id="insertNode" parameterType="Node" useGeneratedKeys="true" keyProperty="id">
         insert into tb_node
         <trim prefix="(" suffix=")" suffixOverrides=",">
